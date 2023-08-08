@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import ContactSection from "../Components/ContactSection";
-import Cookies from "js-cookie";
 import { getContactsApi } from "../api/Contacts/contacts.Api";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "../Components/Footer";
 
 const Pay = ({ user }) => {
-  const contacts = useSelector((state) => state.contacts.contactList);
   const dispatch = useDispatch();
-  // User's Contact List
-  const [userList, setUserList] = useState([]);
   //gets current users Contact List
   useEffect(() => {
     getContacts();
@@ -18,7 +14,7 @@ const Pay = ({ user }) => {
 
   // get Contacts
   const getContacts = () => {
-    getContactsApi(user, setUserList, dispatch);
+    getContactsApi(user, dispatch);
   };
   return (
     <>
@@ -33,12 +29,7 @@ const Pay = ({ user }) => {
       </div>
       <div className="  border-2 border-[#21b1f8]"></div>
 
-      <ContactSection
-        user={user}
-        userList={userList}
-        contactList={contacts}
-        setUserList={setUserList}
-      />
+      <ContactSection user={user} />
       <div className="md:mt-[40vh] mt-[65vh]">
         <Footer />
       </div>

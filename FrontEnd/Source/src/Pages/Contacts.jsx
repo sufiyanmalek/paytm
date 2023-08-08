@@ -25,8 +25,6 @@ const Contacts = ({ user }) => {
   // to dispatch actions
   const dispatch = useDispatch();
 
-  const [userList, setUserList] = useState([]);
-
   // P2p Transaction List
   const [transactionList, setTransactionList] = useState([]);
 
@@ -74,7 +72,7 @@ const Contacts = ({ user }) => {
 
   // get Contacts
   const getContacts = () => {
-    getContactsApi(user, setUserList, dispatch);
+    getContactsApi(user, dispatch);
   };
 
   // Get P2p Transactions

@@ -1,9 +1,10 @@
-import Cookies from "js-cookie";
 import React from "react";
 import { IoMdRemoveCircle } from "react-icons/io";
+import { useSelector } from "react-redux";
 
-const MyContacts = ({ contactList, removeContact, payContact, user }) => {
-  console.log(user);
+const MyContacts = ({ removeContact, payContact, user }) => {
+  const contactList = useSelector((state) => state.contacts.contactList);
+
   return (
     <div className="p-2">
       <h1 className="text-center my-2 font-semibold text-2xl">Contacts:</h1>

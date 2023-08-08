@@ -15,6 +15,7 @@ import { saveMessage } from "./utils/save.messages.js";
 import cookieParser from "cookie-parser";
 import { SocketModel } from "./Models/socket.model.js";
 import { verifyToken } from "./Authentication/jwt.verifyToken.js";
+import { searchRouter } from "./Routes/search.routes.js";
 
 // express app
 const app = express();
@@ -103,6 +104,9 @@ app.use(login);
 
 //Jwt Middleware
 app.use(verifyToken);
+
+// Search Router
+app.use(searchRouter);
 
 // Contacts
 app.use(contactList);

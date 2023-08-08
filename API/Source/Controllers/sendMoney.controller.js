@@ -18,13 +18,13 @@ export default class SendMoneyController {
     setTimeout(async () => {
       const session = await mongoose.startSession();
       try {
-        let user = req.body;
+        let user = req.user;
         user = await User.findOne({ phone: user.phone });
 
         const recieverPhone = req.params.phone;
         const receiver = await User.findOne({ phone: recieverPhone });
 
-        const { amount, pin } = JSON.parse(req.headers.paymentdetails);
+        const { amount, pin } = req.body;
 
         if (amount < 1) {
           res.status(401).send("amount must be greater than 1");
@@ -62,7 +62,6 @@ export default class SendMoneyController {
               const senderContactExists = receiverCL.contacts.find(
                 (e) => e.userId.toString() == user._id
               );
-
               // If not add in contacts
               if (senderContactExists === undefined) {
                 receiverCL.contacts.push({
@@ -81,12 +80,12 @@ export default class SendMoneyController {
                 );
               }
 
-              // Get sender contact list
+              // // Get sender contact list
               const senderCL = await ContactList.findOne({
                 userPhone: user.phone,
               });
 
-              //check if receiver exists i his list
+              // //check if receiver exists i his list
 
               const receiverContactExists = senderCL.contacts.find((e) => {
                 if (e.userId.toString() == receiver._id) {
@@ -94,7 +93,7 @@ export default class SendMoneyController {
                 }
               });
 
-              // if not add it in contacts
+              // // if not add it in contacts
               if (receiverContactExists === undefined) {
                 senderCL.contacts.push({
                   userId: receiver._id,
@@ -108,7 +107,8 @@ export default class SendMoneyController {
                   },
                   {
                     ...senderCL,
-                  }
+                  },
+                  { new: true }
                 );
               }
               const notificationTransaction = await Transaction.findById(
@@ -127,9 +127,11 @@ export default class SendMoneyController {
               const receiverData = await SocketModel.findOne({
                 userId: newTransaction.receiver,
               });
+              console.log(senderData, receiverData);
 
-              // On Transaction event emitter
-              if (receiverData.socketId) {
+              // // On Transaction event emitter
+              if (receiverData) {
+                console.log("rece");
                 io.to(receiverData.socketId).emit(
                   "on transaction",
                   newTransaction
@@ -143,7 +145,8 @@ export default class SendMoneyController {
                   transaction: notificationTransaction,
                 });
               }
-              if (senderData.socketId) {
+              if (senderData) {
+                console.log("senxd");
                 io.to(senderData.socketId).emit("general transaction", {
                   transaction: generalTransaction,
                   id: senderData.userId,
@@ -178,7 +181,7 @@ export default class SendMoneyController {
                 { new: true }
               );
 
-              // Transaction Mailer
+              // // Transaction Mailer
 
               transactionMailer(
                 user.email,

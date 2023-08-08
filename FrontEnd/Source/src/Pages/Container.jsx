@@ -34,7 +34,7 @@ const Container = () => {
     // Payment Notification
     socket.on("notification", async (data) => {
       console.log(data);
-      getContactsApi(user, undefined, dispatch);
+      getContactsApi(user, dispatch);
       const id = toast.loading("You have one Notification", {
         position: "top-center",
       });

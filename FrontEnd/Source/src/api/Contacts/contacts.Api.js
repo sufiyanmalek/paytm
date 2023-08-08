@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { getContactList } from "../../store/contacts/contactSlice";
 const url = import.meta.env.VITE_API_URL;
 // Get Contacts of User
-export const getContactsApi = (user, setUserList, dispatch) => {
+export const getContactsApi = (user, dispatch) => {
   var data = user;
   var config = {
     method: "post",
@@ -16,9 +16,7 @@ export const getContactsApi = (user, setUserList, dispatch) => {
   axios(config)
     .then(function (response) {
       if (response.status === 200) {
-        if (setUserList) {
-          setUserList(response.data.userList);
-        }
+        console.log(response.data, "asd");
         dispatch(getContactList(response.data.contactList));
       }
     })
@@ -28,12 +26,7 @@ export const getContactsApi = (user, setUserList, dispatch) => {
 };
 
 // Add Contacts
-export const addContactApi = (
-  contact,
-  setUserList,
-  setSearchList,
-  dispatch
-) => {
+export const addContactApi = (contact, dispatch) => {
   const id = toast.loading("Please Wait...", { position: "top-center" });
   var data = JSON.stringify({
     userId: contact._id,
@@ -53,8 +46,6 @@ export const addContactApi = (
     .then(function (response) {
       console.log(response.data);
       dispatch(getContactList(response.data.contactList));
-      setUserList(response.data.userList);
-      setSearchList(response.data.userList);
       toast.update(id, {
         render: response.data.message,
         type: "success",
@@ -70,12 +61,7 @@ export const addContactApi = (
 };
 
 // Remove Contact
-export const removeContactApi = (
-  contact,
-  dispatch,
-  setUserList,
-  setSearchList
-) => {
+export const removeContactApi = (contact, dispatch) => {
   const id = toast.loading("Please Wait...", { position: "top-center" });
   var data = JSON.stringify(contact);
   var config = {
@@ -89,8 +75,6 @@ export const removeContactApi = (
   axios(config)
     .then(function (response) {
       dispatch(getContactList(response.data.contactList));
-      setUserList(response.data.userList);
-      setSearchList(response.data.userList);
       toast.update(id, {
         render: response.data.message,
         type: "success",

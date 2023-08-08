@@ -11,20 +11,16 @@ export const sendMoneyApi = async (
   setPaymentDetails,
   setPayBool
 ) => {
+  console.log(reciever, "asd");
   const id = toast.loading("Processing your Payment!", {
     position: "top-center",
   });
   console.log(reciever);
-  console.log(paymentDetails);
-  var data = user;
+  var data = paymentDetails;
 
   var config = {
     method: "post",
     url: `${url}/send/${reciever.phone}`,
-    headers: {
-      paymentDetails: JSON.stringify(paymentDetails),
-      "Content-Type": "application/json",
-    },
     data: data,
   };
 

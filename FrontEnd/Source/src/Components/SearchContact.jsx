@@ -1,14 +1,29 @@
-import Cookies from "js-cookie";
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { BsFillPlusCircleFill, BsSearch } from "react-icons/bs";
+import { ColorRing } from "react-loader-spinner";
 
-const SearchContact = ({
-  searchUser,
-  userList,
-  addToContacts,
-  payContact,
-  user,
-}) => {
+const SearchContact = ({ addToContacts, payContact, user }) => {
+  const [searchData, setSearchData] = useState([]);
+  const [isloading, setIsLoading] = useState(false);
+  const searchUser = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const searchText = e.target.elements.userPhone.value;
+    console.log(searchText);
+
+    var config = {
+      method: "get",
+      url: `http://192.168.102.104:3000/search?phone=${searchText}`,
+    };
+    try {
+      const response = await axios(config);
+      setSearchData(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="border-e border-black p-2 ">
       <h1 className="text-center my-2 font-semibold text-2xl">
@@ -16,23 +31,37 @@ const SearchContact = ({
       </h1>
       <div>
         <div className="relative  rounded-md shadow-sm">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <span className="text-gray-500 sm:text-sm">
-              <BsSearch />
-            </span>
-          </div>
-          <input
-            type="text"
-            name="userPhone"
-            id="userPhone"
-            onChange={searchUser}
-            className="block w-full outline-none rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#0f4a8a] sm:text-sm sm:leading-6"
-            placeholder="Search User By Phone Number"
-          />
+          <form onSubmit={searchUser} onChange={() => setSearchData([])}>
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span className="text-gray-500 sm:text-sm">
+                <BsSearch />
+              </span>
+            </div>
+            <input
+              type="text"
+              name="userPhone"
+              id="userPhone"
+              className="block w-full outline-none rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#0f4a8a] sm:text-sm sm:leading-6"
+              placeholder="Search User By Phone Number"
+            />
+            <button className="hidden" type="submit"></button>
+          </form>
         </div>
         <div className=" w-[100%] md:h-[300px] h-[100px] p-2 my-2 overflow-y-scroll rounded-md ">
-          {userList.length > 0 &&
-            userList.map((e) => {
+          {isloading ? (
+            <div className="m-auto w-max">
+              <ColorRing
+                visible={true}
+                height="80"
+                width="40"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={["#00174d"]}
+              />
+            </div>
+          ) : (
+            searchData.map((e) => {
               if (e._id !== user._id) {
                 return (
                   <div
@@ -70,7 +99,8 @@ const SearchContact = ({
                   </div>
                 );
               }
-            })}
+            })
+          )}
         </div>
       </div>
     </div>
