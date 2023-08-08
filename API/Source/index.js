@@ -57,13 +57,16 @@ io.on("connection", async (socket) => {
     const sendMessage = await saveMessage(data);
     const senderData = await SocketModel.findOne({ userId: data.sender });
     const receiverData = await SocketModel.findOne({ userId: data.receiver });
-
-    socket.to(receiverData.socketId).emit("message", sendMessage);
-    io.to(senderData.socketId).emit("message", sendMessage);
-    io.to(receiverData.socketId || "aahjsdahjs").emit(
-      "message_notification",
-      sendMessage
-    );
+    if (receiverData) {
+      socket.to(receiverData.socketId).emit("message", sendMessage);
+      io.to(receiverData.socketId || "aahjsdahjs").emit(
+        "message_notification",
+        sendMessage
+      );
+    }
+    if (senderData) {
+      io.to(senderData.socketId).emit("message", sendMessage);
+    }
   });
 
   socket.on("sign_out", async (id) => {
