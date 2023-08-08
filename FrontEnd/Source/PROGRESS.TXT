@@ -1,0 +1,8 @@
+----Paytm----
+Tasks Completed:
+1. All Apis Done
+2. Landing Page
+3. register and login
+4. otp validation
+5. cookie and session management
+-->Currently designing wallet frontend
