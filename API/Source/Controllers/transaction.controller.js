@@ -44,7 +44,7 @@ export default class TransactionController {
         .populate("sender", "name ")
         .populate("receiver", "name");
       transaction = transaction.filter((e) => {
-        if (e.sender._id.toString() !== e.receiver._id.toString()) {
+        if (e.sender._id !== e.receiver._id) {
           return e;
         }
       });
@@ -87,7 +87,7 @@ export default class TransactionController {
           let openingBalance;
           if (
             transaction[transaction.length - 1].sender._id.toString() ===
-            user._id
+            user._id.toString()
           ) {
             openingBalance = transaction[transaction.length - 1].senderOB;
             console.log(openingBalance);
@@ -96,7 +96,7 @@ export default class TransactionController {
             console.log(openingBalance);
           }
           let closingBalance;
-          if (transaction[0].sender._id.toString() === user._id) {
+          if (transaction[0].sender._id.toString() === user._id.toString()) {
             closingBalance = transaction[0].senderCB;
             console.log(closingBalance);
           } else {
@@ -108,13 +108,13 @@ export default class TransactionController {
           let In = 0;
           transaction.forEach((e) => {
             if (
-              e.sender._id.toString() == user._id &&
-              e.receiver._id.toString() != user._id
+              e.sender._id.toString() == user._id.toString() &&
+              e.receiver._id.toString() != user._id.toString()
             ) {
               Out = Out + e.amount;
             } else if (
-              e.receiver._id.toString() == user._id &&
-              e.sender._id.toString() != user._id
+              e.receiver._id.toString() == user._id.toString() &&
+              e.sender._id.toString() != user._id.toString()
             ) {
               In = In + e.amount;
             } else {
