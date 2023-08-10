@@ -83,6 +83,9 @@ const Navbar = ({ user }) => {
             <li className="md:px-2 xl:px-5 navLinks my-auto font-medium xl:text-lg">
               <Link to="/transactions">All Transactions</Link>
             </li>
+            <li className="md:px-2 xl:px-5 navLinks my-auto font-medium xl:text-lg">
+              <Link to="/paybyQR">Pay By QR</Link>
+            </li>
           </ul>
         )}
 
@@ -99,7 +102,10 @@ const Navbar = ({ user }) => {
           <>
             <div className=" my-auto text-white  ">
               {
-                <button className="bg-[#002970]  me-5 p-0.5  rounded-full ">
+                <Link
+                  to={"/Profile"}
+                  className="bg-[#002970]  me-5 sm:p-2 sm:py-3  rounded-full "
+                >
                   <p className="mx-2 ms-4 sm:inline-block hidden">
                     {" "}
                     Hi, {user.phone}
@@ -109,7 +115,7 @@ const Navbar = ({ user }) => {
                     src="/images/userIcon.svg"
                     alt="user"
                   ></img>
-                </button>
+                </Link>
               }
               <button
                 onClick={signOut}
@@ -139,6 +145,9 @@ const Navbar = ({ user }) => {
             </li>
             <li className="text-base font-medium p-5 border-b border-gray-500">
               <Link to="/transactions">All Transactions</Link>
+            </li>
+            <li className="text-base font-medium p-5 border-b border-gray-500">
+              <Link to="/paybyQR">Pay By QR</Link>
             </li>
           </ul>
           <button

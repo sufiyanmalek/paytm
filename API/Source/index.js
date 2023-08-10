@@ -16,6 +16,8 @@ import cookieParser from "cookie-parser";
 import { SocketModel } from "./Models/socket.model.js";
 import { verifyToken } from "./Authentication/jwt.verifyToken.js";
 import { searchRouter } from "./Routes/search.routes.js";
+import fileUpload from "express-fileupload";
+import { fileRouter } from "./Routes/qrReader.routes.js";
 
 // express app
 const app = express();
@@ -92,12 +94,16 @@ app.use(
 
 app.use(cookieParser());
 
+app.use(fileUpload());
+
 // database connection
 connectToDB();
 
 // JSON middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(fileRouter);
 
 // Register User
 app.use(register);

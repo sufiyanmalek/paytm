@@ -20,6 +20,8 @@ import { getContactsApi } from "../api/Contacts/contacts.Api";
 import { playNotificationSound } from "../utils/notification";
 import axios from "axios";
 import { AuthRoute } from "./AuthRoute";
+import ProfilePage from "./ProfilePage";
+import PayByQr from "./PayByQr";
 const url = import.meta.env.VITE_API_URL;
 
 const Container = () => {
@@ -156,22 +158,19 @@ const Container = () => {
             />
           }
         />
-
-        {/* <Route element={<AuthRoute user={user} setUser={setUser} />}>
-          <Route
-            path="/home"
-            element={<HomePage user={user} setUser />}
-          ></Route>
-
-          <Route path="/wallet" element={<WalletPage user={user} />}></Route>
-          <Route path="/pay" element={<Pay user={user} />}></Route>
-          <Route path="/contacts" element={<Contacts user={user} />}></Route>
-          <Route
-            path="/transactions"
-            element={<TransactionPage setUser={setUser} user={user} />}
-          ></Route>
-        </Route> */}
-        <Route path="*" element={<PageNotFound />} />
+        <Route
+          path="/Profile"
+          element={
+            <AuthRoute user={user} setUser={setUser} Component={ProfilePage} />
+          }
+        />
+        <Route
+          path="/paybyQR"
+          element={
+            <AuthRoute user={user} setUser={setUser} Component={PayByQr} />
+          }
+        />
+        <Route path="*" element={<PageNotFound user={user} />} />
       </Routes>
       <ToastContainer />
     </>
