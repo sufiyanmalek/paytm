@@ -4,6 +4,7 @@ import axios from "axios";
 import PaymentModal from "../Components/PaymentModal";
 const url = import.meta.env.VITE_API_URL;
 import { AiOutlineArrowUp } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 const PayByQr = ({ user }) => {
   // Show hide payment modal
@@ -13,6 +14,7 @@ const PayByQr = ({ user }) => {
 
   const seeTransactions = [];
   const handleChange = (e) => {
+    const id = toast.loading("Please Wait...", { position: "top-center" });
     const data = new FormData();
     data.append("qr", e.target.files[0]);
 
@@ -26,11 +28,27 @@ const PayByQr = ({ user }) => {
     axios(config)
       .then(function (response) {
         setReciever(response.data);
+        setPayBool(true);
+        toast.update(id, {
+          render: "Valid QR!",
+          type: "success",
+          isLoading: false,
+          autoClose: 1500,
+          closeButton: true,
+          position: "top-center",
+        });
       })
       .catch(function (error) {
+        toast.update(id, {
+          render: error.response.data,
+          type: "error",
+          isLoading: false,
+          autoClose: 1500,
+          closeButton: true,
+          position: "top-center",
+        });
         console.log(error);
       });
-    setPayBool(true);
     e.target.value = null;
   };
   return (

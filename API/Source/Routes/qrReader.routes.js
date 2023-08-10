@@ -16,12 +16,16 @@ fileRouter.post("/qr", async (req, res) => {
       let qrcode = new qrCode();
       qrcode.callback = function (err, value) {
         if (err) {
-          console.error(err);
+          res.status(400).send(err);
+          return;
         }
-        console.log(value);
-        res.status(200).json({
-          phone: value.result,
-        });
+        if (value) {
+          res.status(200).json({
+            phone: value.result,
+          });
+        } else {
+          res.status(400).send("QR code not working");
+        }
       };
       qrcode.decode(image.bitmap);
     });
