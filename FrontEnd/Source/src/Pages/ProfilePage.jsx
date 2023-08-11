@@ -33,8 +33,11 @@ const ProfilePage = ({ user }) => {
         <p className="p-2 font-semibold text-xl">Your QR Code: </p>
 
         <div className="my-3 p-2 ">
-          <div ref={QRref}>
-            <QRCode value={user.phone.toString()} />
+          <div
+            ref={QRref}
+            className="border border-black w-fit p-5 flex justify-center rounded-lg bg relative"
+          >
+            <QRCode value={JSON.stringify({ phone: user.phone.toString() })} />
           </div>
         </div>
         <div className="p-2">
