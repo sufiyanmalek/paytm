@@ -87,6 +87,7 @@ const SearchContact = ({ addToContacts, payContact, user }) => {
                       <button
                         onClick={() => {
                           addToContacts(e);
+                          setSearchData([]);
                         }}
                         className="ms-3 my-auto"
                       >
