@@ -5,12 +5,16 @@ import PaymentModal from "../Components/PaymentModal";
 const url = import.meta.env.VITE_API_URL;
 import { AiOutlineArrowUp } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { KycModal } from "../Components/KycModal";
 
 const PayByQr = ({ user }) => {
   // Show hide payment modal
   const [payBool, setPayBool] = useState(false);
   // set receiver while paying
   const [reciever, setReciever] = useState();
+
+  // show hide KYC Modal
+  const [kycPrompt, setKycPrompt] = useState(false);
 
   const seeTransactions = [];
   const handleChange = (e) => {
@@ -28,7 +32,11 @@ const PayByQr = ({ user }) => {
     axios(config)
       .then(function (response) {
         setReciever(response.data);
-        setPayBool(true);
+        if (user.isKycVerified) {
+          setPayBool(true);
+        } else {
+          setKycPrompt(true);
+        }
         toast.update(id, {
           render: "Valid QR!",
           type: "success",
@@ -76,7 +84,7 @@ const PayByQr = ({ user }) => {
                 src="/images/qr-code-scan-svgrepo-com.svg"
                 className="w-24 mx-auto"
                 alt=""
-                srcset=""
+                srcSet=""
               />
               <p>
                 Upload <AiOutlineArrowUp className="inline-block" />
@@ -100,6 +108,7 @@ const PayByQr = ({ user }) => {
           reciever={reciever}
         />
       )}
+      {kycPrompt && <KycModal setKycPrompt={setKycPrompt} />}
     </div>
   );
 };

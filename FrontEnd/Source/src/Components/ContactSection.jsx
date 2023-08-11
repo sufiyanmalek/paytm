@@ -5,6 +5,8 @@ import SearchContact from "./SearchContact";
 import MyContacts from "./MyContacts";
 import { addContactApi, removeContactApi } from "../api/Contacts/contacts.Api";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { KycModal } from "./KycModal";
 
 const ContactSection = ({ user }) => {
   const contactList = useSelector((state) => state.contacts.contactList);
@@ -12,6 +14,7 @@ const ContactSection = ({ user }) => {
   const dispatch = useDispatch();
   const [payBool, setPayBool] = useState(false);
   const [reciever, setReciever] = useState();
+  const [kycPrompt, setKycPrompt] = useState(false);
 
   //add to User's Contact List
   const addToContacts = (contact) => {
@@ -19,11 +22,15 @@ const ContactSection = ({ user }) => {
   };
 
   // Pay to Contact
-  const payContact = (user) => {
-    console.log(user);
-    console.log(user, "a");
-    setReciever(user);
-    setPayBool(true);
+  const payContact = (receiver) => {
+    console.log(receiver);
+    console.log(receiver, "a");
+    setReciever(receiver);
+    if (user.isKycVerified) {
+      setPayBool(true);
+    } else {
+      setKycPrompt(true);
+    }
   };
 
   // Remove Contact
@@ -48,6 +55,7 @@ const ContactSection = ({ user }) => {
       {payBool && (
         <PaymentModal setPayBool={setPayBool} user={user} reciever={reciever} />
       )}
+      {kycPrompt && <KycModal setKycPrompt={setKycPrompt} />}
     </>
   );
 };

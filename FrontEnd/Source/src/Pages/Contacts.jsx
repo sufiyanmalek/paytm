@@ -11,6 +11,7 @@ import { getMessages } from "../api/Conversation/conversation.Api";
 import socket from "../socket";
 import TransactionCard from "../Components/TransactionCard";
 import Chat from "../Components/Chat";
+import { KycModal } from "../Components/KycModal";
 
 const Contacts = ({ user }) => {
   // ref for autoscroll
@@ -39,6 +40,9 @@ const Contacts = ({ user }) => {
 
   // set receiver while paying
   const [reciever, setReciever] = useState();
+
+  // show hide KYC Modal
+  const [kycPrompt, setKycPrompt] = useState(false);
 
   //gets current users Contact List
   useEffect(() => {
@@ -91,7 +95,11 @@ const Contacts = ({ user }) => {
   const payContact = () => {
     console.log(selectedUser);
     setReciever(selectedUser);
-    setPayBool(true);
+    if (user.isKycVerified) {
+      setPayBool(true);
+    } else {
+      setKycPrompt(true);
+    }
   };
 
   // Send Message
@@ -256,6 +264,7 @@ const Contacts = ({ user }) => {
           reciever={reciever}
         />
       )}
+      {kycPrompt && <KycModal setKycPrompt={setKycPrompt} />}
       <div className="mt-[50vh]">
         <Footer />
       </div>

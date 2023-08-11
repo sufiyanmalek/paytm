@@ -5,17 +5,25 @@ import WalletSection from "../Components/WalletSection";
 import { addMoneyToWalletApi, getWalletApi } from "../api/Wallet/wallet.Api";
 import Footer from "../Components/Footer";
 import socket from "../socket";
+import VerifyKyc from "../Components/VerifyKyc";
 
 const WalletPage = ({ user }) => {
   const [wallet, setWallet] = useState(); // wallet details
   const [addMoneyDetails, setAddMoneyDetails] = useState({}); //add money details
+  const [isKycVerified, setIsKycVerified] = useState(user.isKycVerified);
+
+  console.log();
 
   //gets current users wallet details
   useEffect(() => {
     socket.on("update_wallet", (data) => {
-      getWallet();
+      if (user.isKycVerified) {
+        getWallet();
+      }
     });
-    getWallet();
+    if (user.isKycVerified) {
+      getWallet();
+    }
   }, [socket]);
 
   //get wallet
@@ -51,12 +59,21 @@ const WalletPage = ({ user }) => {
           <span className="font-bold">Wallet</span>
         </p>
       </div>
-      <WalletSection
-        addMoney={addMoney}
-        handleChange={handleChange}
-        wallet={wallet}
-        addMoneyDetails={addMoneyDetails}
-      />
+      {isKycVerified && (
+        <WalletSection
+          addMoney={addMoney}
+          handleChange={handleChange}
+          wallet={wallet}
+          addMoneyDetails={addMoneyDetails}
+        />
+      )}
+      {!isKycVerified && (
+        <VerifyKyc
+          getWallet={getWallet}
+          setIsKycVerified={setIsKycVerified}
+          user={user}
+        />
+      )}
       <div className="border-2 border-[#21b1f8]"></div>
       <div className="md:mt-[40vh] mt-[50vh]">
         <Footer />

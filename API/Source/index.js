@@ -18,6 +18,7 @@ import { verifyToken } from "./Authentication/jwt.verifyToken.js";
 import { searchRouter } from "./Routes/search.routes.js";
 import fileUpload from "express-fileupload";
 import { fileRouter } from "./Routes/qrReader.routes.js";
+import { kycRouter } from "./Routes/kyc.routes.js";
 
 // express app
 const app = express();
@@ -113,6 +114,9 @@ app.use(login);
 
 //Jwt Middleware
 app.use(verifyToken);
+
+// KYC Router
+app.use(kycRouter);
 
 // Search Router
 app.use(searchRouter);
