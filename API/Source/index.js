@@ -78,6 +78,21 @@ io.on("connection", async (socket) => {
     }).populate("userId");
     console.log(deleteSocketData, "deleted");
   });
+
+  socket.on("typing", async (data) => {
+    const senderData = await SocketModel.findOne({ userId: data.sender });
+    const receiverData = await SocketModel.findOne({ userId: data.receiver });
+    if (receiverData) {
+      socket.to(receiverData.socketId).emit("typing");
+    }
+  });
+  socket.on("typing_stopped", async (data) => {
+    const senderData = await SocketModel.findOne({ userId: data.sender });
+    const receiverData = await SocketModel.findOne({ userId: data.receiver });
+    if (receiverData) {
+      socket.to(receiverData.socketId).emit("typing_stopped");
+    }
+  });
 });
 
 // cors config

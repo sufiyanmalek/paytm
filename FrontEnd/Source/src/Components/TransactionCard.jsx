@@ -4,8 +4,10 @@ const TransactionCard = ({ date, transaction, user }) => {
   return (
     <div
       className={`block my-2 w-[150px] ${
-        transaction.sender._id == user._id && "ms-auto"
-      }  md:w-[300px]  p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 `}
+        transaction.sender._id == user._id
+          ? "ms-auto rounded-l-3xl rounded-br-3xl bg-gray-200"
+          : "rounded-r-3xl rounded-bl-3xl bg-[#d2f0ff]"
+      }  md:w-[300px]  p-6    `}
     >
       <h5 className=" text-xl font-bold tracking-tight text-gray-900 ">
         ₹{transaction.amount}

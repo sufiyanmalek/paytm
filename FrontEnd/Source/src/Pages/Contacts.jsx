@@ -12,7 +12,9 @@ import socket from "../socket";
 import TransactionCard from "../Components/TransactionCard";
 import Chat from "../Components/Chat";
 import { KycModal } from "../Components/KycModal";
-
+import { RiSendPlaneFill } from "react-icons/ri";
+import { BsFillChatSquareDotsFill } from "react-icons/bs";
+import { ThreeDots } from "react-loader-spinner";
 const Contacts = ({ user }) => {
   // ref for autoscroll
   const lastDiv = useRef();
@@ -44,6 +46,9 @@ const Contacts = ({ user }) => {
   // show hide KYC Modal
   const [kycPrompt, setKycPrompt] = useState(false);
 
+  // isTyping
+  const [isTyping, setIsTyping] = useState(false);
+
   //gets current users Contact List
   useEffect(() => {
     getContacts();
@@ -62,10 +67,18 @@ const Contacts = ({ user }) => {
     socket.on("on transaction", (transaction) => {
       setTransactionList((prev) => [...prev, transaction]);
     });
+    socket.on("typing", () => {
+      setIsTyping(true);
+    });
+    socket.on("typing_stopped", () => {
+      setIsTyping(false);
+    });
 
     return () => {
       socket.off("message");
       socket.off("on transaction");
+      socket.off("typing");
+      socket.off("typing_stopped");
     };
   }, [socket]);
 
@@ -118,6 +131,32 @@ const Contacts = ({ user }) => {
     }
   };
 
+  let timer;
+
+  // handle Typing
+  const startTyping = () => {
+    console.log("typing..");
+    const data = {
+      sender: user._id,
+      receiver: reciever.userId,
+    };
+    socket.emit("typing", data);
+    clearTimeout(timer);
+  };
+
+  const stoppedTyping = () => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      console.log("stopped");
+      const data = {
+        sender: user._id,
+        receiver: reciever.userId,
+      };
+      socket.emit("typing_stopped", data);
+    }, [500]);
+  };
+
   return (
     <>
       <Navbar user={user} />
@@ -134,7 +173,7 @@ const Contacts = ({ user }) => {
           <div className="  border-2 border-[#21b1f8]"></div>
           <div
             className={`${
-              showTransaction ? "md:w-[80%]" : "md:w-[50%]"
+              showTransaction ? "md:w-[50%]" : "md:w-[50%]"
             } grid w-[90%]  mx-auto left-0 right-0 bg-white border border-gray-500    absolute top-44 rounded-2xl `}
           >
             {!showTransaction && (
@@ -158,15 +197,15 @@ const Contacts = ({ user }) => {
                               {user.phone}
                             </p>
                           </div>
-                          <div className="my-auto mx-3  p-1 ">
+                          <div className="my-auto mx-3   ">
                             <button
-                              className="bg-[#0f4a8a] text-white font-semibold py-1 px-2 rounded-lg"
+                              className="bg-[#0f4a8a]  text-white font-semibold py-2 px-4 rounded-lg"
                               title="Send Money"
                               onClick={() => {
                                 seeTransactions(user);
                               }}
                             >
-                              See Transactions
+                              <BsFillChatSquareDotsFill />
                             </button>
                           </div>
                         </div>
@@ -181,9 +220,9 @@ const Contacts = ({ user }) => {
               </div>
             )}
             {showTransaction && (
-              <div className="h-full  max-h-[65vh]  ">
+              <div className="h-full  max-h-[70vh]  ">
                 {selectedUser.name && (
-                  <div className="h-[65vh]  p-2">
+                  <div className="h-[70vh]  p-2">
                     <div className="border-b border-gray-300 p-2 flex justify-between">
                       <div className="flex items-center">
                         <BiArrowBack
@@ -232,20 +271,43 @@ const Contacts = ({ user }) => {
                       })}
                       <div ref={lastDiv}></div>
                     </div>
-                    <form className="flex " onSubmit={sendMessage}>
+                    <div className="px-5">
+                      {isTyping ? (
+                        <ThreeDots
+                          height="24"
+                          width="24"
+                          radius="9"
+                          color="#00174d"
+                          ariaLabel="three-dots-loading"
+                          wrapperStyle={{}}
+                          wrapperClassName=""
+                          visible={true}
+                        />
+                      ) : (
+                        <span className="invisible">asdas</span>
+                      )}
+                    </div>
+                    <form
+                      className="flex relative w-[80%] mx-auto"
+                      onSubmit={sendMessage}
+                    >
                       <input
                         type="text"
-                        className="border border-black m-2 p-2 w-full rounded-md"
+                        className="border border-black m-2 w-full p-2  rounded-md"
                         value={message || ""}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder="Enter Your message here..."
+                        onKeyUp={stoppedTyping}
+                        onChange={(e) => {
+                          startTyping();
+                          setMessage(e.target.value);
+                        }}
+                        placeholder="Your messages..."
                       />
                       <button
                         type="submit"
-                        className="bg-[#0f4a8a] text-white font-semibold  px-3 my-auto py-2  rounded-lg"
+                        className="bg-[#0f4a8a] text-white font-semibold  px-3 my-auto py-2  rounded-lg absolute right-4 top-[0.80rem]"
                         title="Send Money"
                       >
-                        send
+                        <RiSendPlaneFill />
                       </button>
                     </form>
                   </div>
