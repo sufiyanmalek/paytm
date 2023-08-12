@@ -8,10 +8,15 @@ const ContactListSchema = new mongoose.Schema(
     userPhone: { type: Number },
     contacts: [
       {
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        name: { type: String },
-        email: { type: String },
-        phone: { type: Number },
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        name: { type: String, required: true },
+        email: { type: String, required: true },
+        phone: { type: Number, required: true },
+        profilePic: { type: String, required: true },
       },
     ],
   },

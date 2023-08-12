@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { registerUserApi } from "../api/loginAndVerify.Api";
+import { HiUserPlus } from "react-icons/hi2";
+import { RxCrossCircled } from "react-icons/rx";
 
 const NewSignInForm = ({ setError, error }) => {
   const navigate = useNavigate();
+  const [profilePic, setProfilePic] = useState();
 
   const initialValues = {
     name: "",
@@ -46,7 +49,7 @@ const NewSignInForm = ({ setError, error }) => {
   });
 
   const handleSubmit = (values) => {
-    registerUserApi(values, navigate, setError);
+    registerUserApi(values, profilePic, navigate, setError);
   };
 
   return (
@@ -83,6 +86,48 @@ const NewSignInForm = ({ setError, error }) => {
             className="block w-full p-2 mt-1 border border-gray-500 rounded-md "
           />
           <ErrorMessage name="email" component="div" className="text-red-500" />
+        </div>
+        <div>
+          <p className="block text-sm font-medium text-gray-700 undefined">
+            Profile Picture
+          </p>
+          {!profilePic && (
+            <label htmlFor="profilePic">
+              <div className="text-center border-dashed border-2 cursor-pointer border-black w-full">
+                <HiUserPlus className="mx-auto" size={40} />
+                <p className="text-center text-slate-700 hidden md:block">
+                  Drag & Drop or{" "}
+                  <span className="text-blue-800">Choose file</span> to upload
+                </p>
+                <p className="text-center text-sm my-1 text-gray-500">
+                  JPEG or PNG or WEBP
+                </p>
+              </div>
+              <input
+                type="file"
+                onChange={(e) => {
+                  setProfilePic(e.target.files[0]);
+                }}
+                className="hidden"
+                id="profilePic"
+                accept="image/*"
+              />
+            </label>
+          )}
+          {profilePic && (
+            <div className=" relative p-1">
+              <img
+                src={URL.createObjectURL(profilePic)}
+                className="w-36 border border-black rounded-md "
+              />
+              <RxCrossCircled
+                style={{ backgroundColor: "gray ", borderRadius: "100%" }}
+                className="absolute top-0 left-[8.5rem]"
+                size={20}
+                onClick={() => setProfilePic()}
+              />
+            </div>
+          )}
         </div>
         <div>
           <label

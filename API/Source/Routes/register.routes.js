@@ -11,4 +11,6 @@ const userValidator = new Validator(userSchema);
 export const register = express.Router();
 
 // register user
-register.post("/register", userValidator.validate, registerUser);
+register.post("/register", registerUser);
+
+// userValidator.validate

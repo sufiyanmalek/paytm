@@ -53,6 +53,7 @@ export const contactSchema = joi.object({
   name: joi.string().required().min(3),
   email: joi.string().email().required(),
   phone: joi.number().required().max(9999999999),
+  profilePic: joi.string().required(),
 });
 
 // Add Money verfiy Object

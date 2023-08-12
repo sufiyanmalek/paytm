@@ -111,8 +111,8 @@ const Navbar = ({ user }) => {
                     Hi, {user.phone}
                   </p>
                   <img
-                    className="inline-block w-12 sm:w-auto"
-                    src="/images/userIcon.svg"
+                    className="inline-block w-12 sm:w-5 rounded-[100%] "
+                    src={user.profilePic}
                     alt="user"
                   ></img>
                 </Link>

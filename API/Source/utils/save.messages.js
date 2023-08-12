@@ -43,6 +43,7 @@ export const saveMessage = async (data) => {
           name: senderData.name,
           email: senderData.email,
           phone: senderData.phone,
+          profilePic: senderData.profilePic,
         });
         const updatedReceiverCL = await ContactList.findOneAndUpdate(
           {

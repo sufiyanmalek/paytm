@@ -65,16 +65,25 @@ const SearchContact = ({ addToContacts, payContact, user }) => {
               if (e._id !== user._id) {
                 return (
                   <div
-                    className="border-b my-1 border-gray-300 p-1  flex justify-between align-items-center"
+                    className="border-b my-1 border-gray-300 p-2  flex justify-between align-items-center"
                     key={e._id}
                   >
-                    <div className=" ">
-                      <p className="text-normal text-[#0f4a8a] font-semibold">
-                        {e.name}
-                      </p>
-                      <p className="text-sm text-gray-500 font-semibold">
-                        {e.phone}
-                      </p>
+                    <div className="flex items-center">
+                      <div className="border-4 mx-2 border-[#0f4a8a] overflow-hidden rounded-full">
+                        <img
+                          src={e.profilePic}
+                          className="    object-cover  aspect-square w-14 "
+                          alt=""
+                        />
+                      </div>
+                      <div className="me-2">
+                        <p className="text-normal text-[#0f4a8a] font-semibold">
+                          {e.name}
+                        </p>
+                        <p className="text-sm text-gray-500 font-semibold">
+                          {e.phone}
+                        </p>
+                      </div>
                     </div>
                     <div className="my-auto mx-3  p-1 flex">
                       <button

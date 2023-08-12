@@ -4,18 +4,20 @@ import socket from "../socket";
 const url = import.meta.env.VITE_API_URL;
 
 // Register User
-export const registerUserApi = async (user, navigate, setError) => {
-  var data = JSON.stringify({
-    ...user,
-    phone: parseInt(user.phone),
-  });
+export const registerUserApi = async (user, profilePic, navigate, setError) => {
+  var data = new FormData();
+  data.append(
+    "userData",
+    JSON.stringify({
+      ...user,
+      phone: parseInt(user.phone),
+    })
+  );
+  data.append("profilePic", profilePic);
 
   var config = {
     method: "post",
     url: `${url}/register`,
-    headers: {
-      "Content-Type": "application/json",
-    },
     data: data,
   };
 

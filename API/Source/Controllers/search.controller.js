@@ -10,10 +10,12 @@ export const searchController = async (req, res) => {
       const contactList = await ContactList.findOne({
         userPhone: user.phone,
       });
-      let userList = await User.find({}, { phone: 1, name: 1, email: 1 });
+      let userList = await User.find(
+        {},
+        { phone: 1, name: 1, email: 1, profilePic: 1 }
+      );
       userList = userList.filter((e) => {
         if (e._id != id) {
-          console.log("object");
           const user = contactList.contacts.find((user) => {
             if (user.userId == e._id.toString()) {
               return user;
@@ -33,7 +35,6 @@ export const searchController = async (req, res) => {
         e.phone.toString().match(phone)
       );
 
-      console.log(searchData);
       res.status(200).send(searchData);
     } catch (error) {
       res.status(500).send(error);

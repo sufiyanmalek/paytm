@@ -33,6 +33,7 @@ export const addContactApi = (contact, dispatch) => {
     name: contact.name,
     email: contact.email,
     phone: contact.phone,
+    profilePic: contact.profilePic,
   });
   var config = {
     method: "post",

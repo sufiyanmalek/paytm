@@ -189,14 +189,24 @@ const Contacts = ({ user }) => {
                           }`}
                           key={user._id}
                         >
-                          <div className=" ">
-                            <p className="text-normal text-[#0f4a8a] font-semibold">
-                              {user.name}
-                            </p>
-                            <p className="text-sm text-gray-500 font-semibold">
-                              {user.phone}
-                            </p>
+                          <div className="flex items-center">
+                            <div className="border-4 mx-2 border-[#0f4a8a] overflow-hidden rounded-full">
+                              <img
+                                src={user.profilePic}
+                                className="    object-cover  aspect-square w-14 "
+                                alt=""
+                              />
+                            </div>
+                            <div className=" ">
+                              <p className="text-normal text-[#0f4a8a] font-semibold">
+                                {user.name}
+                              </p>
+                              <p className="text-sm text-gray-500 font-semibold">
+                                {user.phone}
+                              </p>
+                            </div>
                           </div>
+
                           <div className="my-auto mx-3   ">
                             <button
                               className="bg-[#0f4a8a]  text-white font-semibold py-2 px-4 rounded-lg"
@@ -229,6 +239,13 @@ const Contacts = ({ user }) => {
                           className="cursor-pointer"
                           onClick={() => setShowTransaction(false)}
                         />
+                        <div className="border-4 mx-2 border-[#0f4a8a] overflow-hidden rounded-full">
+                          <img
+                            src={selectedUser.profilePic}
+                            className="    object-cover  aspect-square w-14 "
+                            alt=""
+                          />
+                        </div>
                         <div className="mx-4">
                           <p className="text-normal text-[#0f4a8a] font-semibold">
                             {selectedUser.name}

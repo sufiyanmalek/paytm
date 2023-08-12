@@ -70,6 +70,7 @@ export default class SendMoneyController {
                     name: user.name,
                     email: user.email,
                     phone: user.phone,
+                    profilePic: user.profilePic,
                   });
                   const updatedReceiverCL = await ContactList.findOneAndUpdate(
                     {
@@ -101,6 +102,7 @@ export default class SendMoneyController {
                     name: receiver.name,
                     email: receiver.email,
                     phone: receiver.phone,
+                    profilePic: receiver.profilePic,
                   });
                   const updatedSenderCL = await ContactList.findOneAndUpdate(
                     {

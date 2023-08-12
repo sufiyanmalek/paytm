@@ -9,7 +9,6 @@ export default class ContactController {
     try {
       const user = req.user;
       const id = user._id;
-      let userList = await User.find({}, { phone: 1, name: 1, email: 1 });
 
       const contactList = await ContactList.findOne({
         userPhone: user.phone,
@@ -42,29 +41,11 @@ export default class ContactController {
           message:
             "There was no contact list for this user so created a new one",
           contactList: contactList,
-          userList: userList,
         });
       } else {
-        userList = userList.filter((e) => {
-          if (e._id != id) {
-            const user = contactList.contacts.find((user) => {
-              if (user.userId == e._id.toString()) {
-                return user;
-              }
-            });
-            if (user == undefined) {
-              return e;
-            } else {
-              return;
-            }
-          } else {
-            return;
-          }
-        });
         res.status(200).json({
           messsage: "Contact List Already Exists",
           contactList,
-          userList: userList,
         });
       }
     } catch (error) {
@@ -77,11 +58,13 @@ export default class ContactController {
     setTimeout(async () => {
       try {
         const user = req.user;
-        const id = user._id;
-        let userList = await User.find({}, { phone: 1, name: 1, email: 1 });
+        console.log(req.body);
+        console.log(user);
         const contactList = await ContactList.findOne({
           userPhone: user.phone,
         });
+
+        console.log(req.body);
 
         const contact = contactList.contacts.find(
           (e) => e.userId == req.body.userId
@@ -98,26 +81,10 @@ export default class ContactController {
             { ...contactList },
             { new: true }
           );
-          userList = userList.filter((e) => {
-            if (e._id != id) {
-              const user = updatedContactList.contacts.find((user) => {
-                if (user.userId == e._id.toString()) {
-                  return user;
-                }
-              });
-              if (user == undefined) {
-                return e;
-              } else {
-                return;
-              }
-            } else {
-              return;
-            }
-          });
+
           res.status(200).json({
             message: `${req.body.name} has been added to your Contacts`,
             contactList: updatedContactList,
-            userList,
           });
         }
       } catch (error) {
@@ -131,11 +98,10 @@ export default class ContactController {
     setTimeout(async () => {
       try {
         let user = req.user;
-        const id = user._id;
-        let userList = await User.find({}, { phone: 1, name: 1, email: 1 });
         const contactList = await ContactList.findOne({
           userPhone: user.phone,
         });
+
         const contacts = contactList.contacts.filter(
           (user) => user.phone !== req.body.phone
         );
@@ -152,26 +118,10 @@ export default class ContactController {
             new: true,
           }
         );
-        userList = userList.filter((e) => {
-          if (e._id != id) {
-            const user = updatedContactList.contacts.find((user) => {
-              if (user.userId == e._id.toString()) {
-                return user;
-              }
-            });
-            if (user == undefined) {
-              return e;
-            } else {
-              return;
-            }
-          } else {
-            return;
-          }
-        });
+
         res.status(200).json({
           message: `${req.body.name} has been removed from Contacts`,
           contactList: updatedContactList,
-          userList,
         });
       } catch (error) {
         res.status(500).send(error);
