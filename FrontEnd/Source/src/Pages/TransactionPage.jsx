@@ -10,19 +10,30 @@ import socket from "../socket";
 import {
   fetchStatement,
   fetchTransactions,
+  pageZero,
 } from "../store/transactions/transactionSlice";
 import Statement from "../Components/Statement";
 import Footer from "../Components/Footer";
 import VisibilitySensor from "react-visibility-sensor";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 const url = import.meta.env.VITE_API_URL;
 
 const TransactionPage = ({ user }) => {
   const statementRef = useRef();
+  const [params] = useSearchParams();
   const statement = useSelector((state) => state.transaction.statement);
   const [error, setError] = useState();
-  const [invoiceData, setInvoiceData] = useState();
+  const [startDate, setStartDate] = useState(
+    params.get("startDate") ||
+      new Date(new Date().setDate(new Date().getDate() - 30))
+        .toISOString()
+        .slice(0, 10)
+  );
+  const [endDate, setEndDate] = useState(
+    params.get("endDate") || new Date().toISOString().slice(0, 10)
+  );
+
   const transactions = useSelector((state) => state.transaction.transactions);
   const dispatch = useDispatch();
   const dataFetching = useSelector((state) => state.transaction.dataFetching);
@@ -31,7 +42,7 @@ const TransactionPage = ({ user }) => {
 
   //get wallet
   const getWallet = async () => {
-    const params = { user, pageNo };
+    const params = { user, pageNo, startDate, endDate };
     dispatch(fetchTransactions(params));
   };
 
@@ -43,34 +54,38 @@ const TransactionPage = ({ user }) => {
     content: () => statementRef.current,
     documentTitle: "PayTM Statement",
   });
-  // Get Invoice Dates
-  const handleChange = (e) => {
-    setError(false);
-    setInvoiceData((prev) => ({
-      ...prev,
-      [e.target.name]: new Date(e.target.value),
-    }));
-    // console.log(invoiceData);
-  };
 
   // Get Statement Data
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (invoiceData.startDate > invoiceData.endDate) {
+    if (startDate > endDate) {
       setError(true);
     } else {
-      const params = { user, invoiceData };
-      await dispatch(fetchStatement(params));
-      print();
+      const invoiceData = {
+        startDate,
+        endDate,
+      };
+      console.log(invoiceData);
+      const query = `startDate=${startDate}&endDate=${endDate}`;
+      navigate(`?${query}`);
+      const params = { user, pageNo, startDate, endDate };
+      dispatch(fetchTransactions(params));
     }
   };
 
   // Visiblity Sensor on Change
   const onChange = (isVisible) => {
     if (isVisible) {
-      const params = { user, pageNo };
+      const params = { user, pageNo, startDate, endDate };
       dispatch(fetchTransactions(params));
     }
+  };
+
+  const handlePrint = async () => {
+    console.log(startDate, endDate);
+    const params = { user, startDate, endDate, print };
+    await dispatch(fetchStatement(params));
+    print();
   };
 
   return (
@@ -86,11 +101,7 @@ const TransactionPage = ({ user }) => {
         </p>
       </div>
       <div className="lg:w-[70%] md:w-[85%] h-[70%] mx-auto left-0 right-0 bg-white border border-black py-2   absolute top-44 rounded-2xl overflow-hidden ">
-        <form
-          className=" px-5 py-2 w-[80%] mx-auto"
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-        >
+        <form className=" px-5 py-2 w-[80%] mx-auto" onSubmit={handleSubmit}>
           <p className="font-medium text-slate-900">
             Select Start And End date to generate Invoice : <br />
           </p>
@@ -99,6 +110,11 @@ const TransactionPage = ({ user }) => {
             type="date"
             className="border my-2  border-black px-2 py-[2px] mt-5 rounded-[5px]"
             name="startDate"
+            onChange={(e) => {
+              setStartDate(e.target.value);
+              dispatch(pageZero());
+            }}
+            value={startDate}
             required
           />{" "}
           <br />
@@ -107,6 +123,11 @@ const TransactionPage = ({ user }) => {
             type="date"
             className="border ml-2 mb-2 border-black px-2 py-[2px] rounded-[5px]"
             name="endDate"
+            onChange={(e) => {
+              setEndDate(e.target.value);
+              dispatch(pageZero());
+            }}
+            value={endDate}
             required
           />{" "}
           <br />
@@ -118,9 +139,21 @@ const TransactionPage = ({ user }) => {
               <br />
             </>
           )}
-          <button className="bg-[#00174d] text-white py-1 px-2 my-2 font-semibold rounded-md">
-            Get Statement
-          </button>
+          <div className="flex justify-between">
+            <button
+              type="submit"
+              className="bg-[#00174d] text-white py-1 px-2 my-2 font-semibold rounded-md"
+            >
+              Get Statement
+            </button>
+            <button
+              type="button"
+              className="bg-[#00174d] text-white py-1 px-2 my-2 font-semibold rounded-md"
+              onClick={handlePrint}
+            >
+              print
+            </button>
+          </div>
         </form>
         <div className="  border-2 border-[#21b1f8]"></div>
         <div className="border-2 border-[#21066e]"></div>

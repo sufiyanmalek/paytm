@@ -50,11 +50,6 @@ const TransactionTab = ({ e, User }) => {
           } `}
         >
           Rs.{e.amount.toFixed(2)}
-          {/* {e.status == "Credited"
-            ? `+ Rs.${e.amount.toFixed(2)}`
-            : e.status == "Debited"
-            ? `- Rs.${e.amount.toFixed(2)}`
-            : `+ Rs.${e.amount.toFixed(2)}`} */}
         </p>
       </td>
       <td className="text-end   p-3 text-[#a4a4a4] md:flex justify-end items-center hidden  h-max py-6">

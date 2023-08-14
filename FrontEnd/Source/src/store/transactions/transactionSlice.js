@@ -24,17 +24,29 @@ export const transactionSlice = createSlice({
         state.transactions.unshift(action.payload);
       }
     },
+    pageZero: (state, action) => {
+      state.pageNo = 0;
+    },
   },
 
   extraReducers: (builder) => {
     builder.addCase(fetchTransactions.fulfilled, (state, action) => {
-      state.transactions = [
-        ...state.transactions,
-        ...action.payload.transactions,
-      ];
-      state.pageNo = action.payload.pageNo;
-      if (action.payload.transactions.length < 10) {
-        state.dataFetching = false;
+      if (action.payload.pageNo == 1) {
+        state.transactions = [...action.payload.transactions];
+        state.pageNo = action.payload.pageNo;
+        state.dataFetching = true;
+        if (action.payload.transactions.length < 10) {
+          state.dataFetching = false;
+        }
+      } else {
+        state.transactions = [
+          ...state.transactions,
+          ...action.payload.transactions,
+        ];
+        state.pageNo = action.payload.pageNo;
+        if (action.payload.transactions.length < 10) {
+          state.dataFetching = false;
+        }
       }
     });
     builder.addCase(fetchStatement.fulfilled, (state, action) => {
@@ -61,9 +73,8 @@ export const fetchTransactions = createAsyncThunk(
     try {
       var config = {
         method: "get",
-        url: `${url}/transactions`,
+        url: `${url}/transactions?startDate=${params.startDate}&endDate=${params.endDate}&pageNo=${params.pageNo}`,
         headers: {
-          pageNo: params.pageNo,
           "Content-Type": "application/json",
         },
       };
@@ -88,6 +99,8 @@ export const fetchTransactions = createAsyncThunk(
         }
       });
       // console.log(response.data, "asd");
+      console.log(response.data);
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -101,7 +114,7 @@ export const fetchStatement = createAsyncThunk(
     try {
       var config = {
         method: "get",
-        url: `${url}/statement?startDate=${params.invoiceData.startDate}&endDate=${params.invoiceData.endDate}`,
+        url: `${url}/statement?startDate=${params.startDate}&endDate=${params.endDate}`,
       };
 
       const response = await axios(config);
@@ -136,6 +149,6 @@ export const fetchStatement = createAsyncThunk(
   }
 );
 
-export const { unshiftTransaction } = transactionSlice.actions;
+export const { unshiftTransaction, pageZero } = transactionSlice.actions;
 
 export default transactionSlice.reducer;

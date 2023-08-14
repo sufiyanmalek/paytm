@@ -8,10 +8,28 @@ export default class TransactionController {
     setTimeout(async () => {
       try {
         const user = req.user;
-        const pageNo = parseInt(req.headers.pageno);
+        console.log(req.query);
+        const pageNo = parseInt(req.query.pageNo);
+        let { startDate, endDate } = req.query;
+        startDate = new Date(startDate);
+        endDate = new Date(endDate);
+        console.log(endDate);
+        const hoursToAdd = 23;
+        const minutesToAdd = 59;
+        const secondsToAdd = 59;
+        endDate.setHours(endDate.getHours() + hoursToAdd);
+        endDate.setMinutes(endDate.getMinutes() + minutesToAdd);
+        endDate.setSeconds(endDate.getSeconds() + secondsToAdd);
+        endDate = new Date(endDate);
+        console.log(endDate);
+
         const limit = 10;
         let transactions = await Transaction.find({
           $or: [{ receiver: user._id }, { sender: user._id }],
+          $and: [
+            { timestamp: { $gte: startDate } },
+            { timestamp: { $lte: endDate } },
+          ],
         })
           .populate("sender", "name")
           .populate("receiver", "name")
@@ -67,6 +85,8 @@ export default class TransactionController {
         startDate.getTime() - (startDate.getTime() % millisecondsInOneDay);
       startDate.setTime(millisecondsToSubtract);
       startDate = startDate.toISOString();
+
+      endDate = new Date(endDate);
 
       if (startDate > endDate) {
         res.status(400).send("Start date should be smaller than End date!");
