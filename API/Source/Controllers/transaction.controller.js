@@ -44,10 +44,11 @@ export default class TransactionController {
         .populate("sender", "name ")
         .populate("receiver", "name");
       transaction = transaction.filter((e) => {
-        if (e.sender._id !== e.receiver._id) {
+        if (e.sender._id.toString() !== e.receiver._id.toString()) {
           return e;
         }
       });
+      console.log(transaction);
       res.send(transaction);
     } catch (error) {
       res.status(500).send(error);

@@ -39,7 +39,7 @@ const ContactSection = ({ user }) => {
   };
   return (
     <>
-      <div className="grid md:grid-cols-2  w-[70%] mx-auto left-0 right-0 bg-white border border-gray-500    absolute top-44 rounded-2xl ">
+      <div className="grid md:grid-cols-2 mg:[80%] w-[90%] lg:w-[70%] mx-auto left-0 right-0 bg-white border border-gray-500    absolute top-44 rounded-2xl ">
         <SearchContact
           user={user}
           addToContacts={addToContacts}

@@ -58,8 +58,8 @@ export const contactSchema = joi.object({
 
 // Add Money verfiy Object
 export const verifyAmount = joi.object({
-  amount: joi.number().required().max(25000).min(1).messages({
-    "number.max": "Can't add more than 25000Rs at once",
+  amount: joi.number().required().max(10000).min(1).messages({
+    "number.max": "Can't add more than 10000Rs at once",
   }),
   pin: joi.string().length(4).required(),
 });

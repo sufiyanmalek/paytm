@@ -84,7 +84,7 @@ export default class WalletController {
 
           const socketData = await SocketModel.findOne({ userId: user._id });
 
-          io.to(socketData.socketId).emit("general transaction", {
+          io.to(socketData.socketId).emit("Added_wallet", {
             transaction: generalTransaction,
             id: user._id,
           });

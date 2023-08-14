@@ -183,7 +183,7 @@ const Contacts = ({ user }) => {
                     contacts.map((user, index) => {
                       return (
                         <div
-                          className={`sm:flex text-center sm:text-left  justify-between p-2 mx-2 ${
+                          className={`flex text-center sm:text-left  justify-between p-2 mx-2 ${
                             index !== contacts.length - 1 &&
                             "border-b border-gray-400"
                           }`}
@@ -257,7 +257,7 @@ const Contacts = ({ user }) => {
                       </div>
                       <button
                         onClick={payContact}
-                        className="bg-[#0f4a8a] text-white font-semibold  px-3 me-3 rounded-lg"
+                        className="bg-[#0f4a8a] text-white font-semibold  px-3 me-3 py-2 rounded-lg my-auto"
                         title="Send Money"
                       >
                         pay

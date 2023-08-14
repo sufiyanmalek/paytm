@@ -5,6 +5,8 @@ import { User } from "../Models/user.model.js";
 export const qrController = async (req, res) => {
   const AcceptedFileType = ["image/png", "image/webp", "image/jpeg"];
   try {
+    const user = req.user;
+    console.log(user);
     const data = req.files.qr;
     console.log(data);
     if (AcceptedFileType.includes(data.mimetype)) {
@@ -23,15 +25,19 @@ export const qrController = async (req, res) => {
             if (value.result.length === 22) {
               const data = JSON.parse(value.result);
               if (data.phone) {
-                const user = await User.findOne({ phone: data.phone });
-                if (user) {
-                  res.status(200).json({
-                    phone: user.phone,
-                  });
+                if (Number(data.phone) !== user.phone) {
+                  const user = await User.findOne({ phone: data.phone });
+                  if (user) {
+                    res.status(200).json({
+                      phone: user.phone,
+                    });
+                  } else {
+                    res
+                      .status(404)
+                      .send("Qr code isn't associated with any user");
+                  }
                 } else {
-                  res
-                    .status(404)
-                    .send("Qr code isn't associated with any user");
+                  res.status(404).send("You Can't Pay to yourself");
                 }
               } else {
                 res.status(404).send("Invalid QR code");

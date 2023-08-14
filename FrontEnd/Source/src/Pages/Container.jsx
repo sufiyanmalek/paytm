@@ -92,13 +92,31 @@ const Container = () => {
       ) {
         newTransaction = { ...transaction, status: "Credited" };
       }
-      console.log(newTransaction, "asd");
+
+      dispatch(unshiftTransaction(newTransaction));
+    });
+    socket.on("Added_wallet", ({ transaction, id }) => {
+      let newTransaction;
+      if (transaction.sender._id == transaction.receiver._id) {
+        newTransaction = { ...transaction, status: "Added" };
+      } else if (
+        transaction.sender._id == id &&
+        transaction.receiver._id != id
+      ) {
+        newTransaction = { ...transaction, status: "Debited" };
+      } else if (
+        transaction.receiver._id == id &&
+        transaction.sender._id != id
+      ) {
+        newTransaction = { ...transaction, status: "Credited" };
+      }
       dispatch(unshiftTransaction(newTransaction));
     });
     return () => {
       socket.off("notification");
       socket.off("message_notification");
       socket.off("general transaction");
+      socket.off("Added_wallet");
     };
   }, [socket]);
 
