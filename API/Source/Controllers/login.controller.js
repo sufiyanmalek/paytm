@@ -14,7 +14,7 @@ export const loginUser = async (req, res) => {
       if (password) {
         const otp = Math.floor(Math.random() * 1000000);
         // twilioOTP(otp, req.body.phone);
-        console.log(otp);
+        // console.log(otp);
         const deleteLastOtps = await userOtpModel.deleteMany({
           phone: req.body.phone,
         });
@@ -27,7 +27,7 @@ export const loginUser = async (req, res) => {
           const deletOtp = await userOtpModel.findOneAndDelete({
             phone: req.body.phone,
           });
-          console.log("otp expired");
+          // console.log("otp expired");
         }, 30000);
         res.status(200).json({
           message: `Your OTP is : ${otp}`,

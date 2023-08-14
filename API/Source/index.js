@@ -29,7 +29,7 @@ const io = new Server(httpServer);
 
 // Socket for messages
 io.on("connection", async (socket) => {
-  console.log(socket.id);
+  // console.log(socket.id);
 
   socket.on("user joined", async (id) => {
     const socketData = await SocketModel.findOne({ userId: id });
@@ -44,7 +44,7 @@ io.on("connection", async (socket) => {
           },
         }
       );
-      console.log(updatedSocketData, "update");
+      // console.log(updatedSocketData, "update");
     } else {
       const deleteSockets = await SocketModel.deleteMany({ userId: id });
       const socketData = new SocketModel({
@@ -52,7 +52,7 @@ io.on("connection", async (socket) => {
         socketId: socket.id,
       });
       await socketData.save();
-      console.log(socketData, "new");
+      // console.log(socketData, "new");
     }
   });
 
@@ -76,7 +76,7 @@ io.on("connection", async (socket) => {
     const deleteSocketData = await SocketModel.findOneAndDelete({
       userId: id,
     }).populate("userId");
-    console.log(deleteSocketData, "deleted");
+    // console.log(deleteSocketData, "deleted");
   });
 
   socket.on("typing", async (data) => {

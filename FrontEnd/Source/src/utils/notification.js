@@ -3,7 +3,7 @@ export const playNotificationSound = () => {
     "https://paytm-kyc.s3.ap-south-1.amazonaws.com/Apple+Notification+Tone.mp3"
   );
   audio.addEventListener("canplaythrough", () => {
-    console.log("here");
+    // console.log("here");
     audio.play().catch((e) => {
       window.addEventListener(
         "click",

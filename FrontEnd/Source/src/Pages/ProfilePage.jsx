@@ -5,7 +5,7 @@ import { exportComponentAsJPEG } from "react-component-export-image";
 
 const ProfilePage = ({ user }) => {
   const QRref = useRef();
-  console.log(user, "asd");
+  // console.log(user, "asd");
   return (
     <div>
       <Navbar user={user} />

@@ -57,13 +57,13 @@ export default class ContactController {
     setTimeout(async () => {
       try {
         const user = req.user;
-        console.log(req.body);
-        console.log(user);
+        // console.log(req.body);
+        // console.log(user);
         const contactList = await ContactList.findOne({
           userPhone: user.phone,
         });
 
-        console.log(req.body);
+        // console.log(req.body);
 
         const contact = contactList.contacts.find(
           (e) => e.userId == req.body.userId

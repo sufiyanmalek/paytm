@@ -25,7 +25,7 @@ const PaymentModal = ({ setPayBool, reciever, seeTransactions, user }) => {
   //get wallet
   const getWallet = async () => {
     const wallet = await getWalletApi(user); // Get Wallet Api
-    console.log(wallet);
+    // console.log(wallet);
     setWallet(wallet.data);
   };
 

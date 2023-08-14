@@ -50,7 +50,7 @@ const TransactionPage = ({ user }) => {
       ...prev,
       [e.target.name]: new Date(e.target.value),
     }));
-    console.log(invoiceData);
+    // console.log(invoiceData);
   };
 
   // Get Statement Data

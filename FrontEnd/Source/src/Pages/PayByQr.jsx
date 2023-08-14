@@ -55,7 +55,7 @@ const PayByQr = ({ user }) => {
           closeButton: true,
           position: "top-center",
         });
-        console.log(error);
+        // console.log(error);
       });
     e.target.value = null;
   };

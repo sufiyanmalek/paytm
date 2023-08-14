@@ -12,9 +12,9 @@ export const generateToken = (user) => {
     const token = jwt.sign({ id: _id.toString() }, process.env.jwt_secret, {
       expiresIn: "2h",
     });
-    console.log(token);
+    // console.log(token);
     return token;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };

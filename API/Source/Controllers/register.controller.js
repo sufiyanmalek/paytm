@@ -10,13 +10,13 @@ export const registerUser = async (req, res) => {
   const AcceptedFileType = ["image/png", "image/webp", "image/jpeg"];
   try {
     const data = JSON.parse(req.body.userData);
-    console.log(data);
+    // console.log(data);
     const pic = req.files?.profilePic;
     if (AcceptedFileType.includes(pic.mimetype)) {
       const userx = await User.findOne({
         email: data.email,
       });
-      console.log(userx);
+      // console.log(userx);
       const user = await User.findOne({
         phone: data.phone,
       });

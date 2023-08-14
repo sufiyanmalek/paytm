@@ -26,7 +26,7 @@ async function TextToSpeech(amount) {
 
     // Play Audio on DOM Error catch
     audio.addEventListener("canplaythrough", () => {
-      console.log("here");
+      // console.log("here");
       audio.play().catch((e) => {
         window.addEventListener(
           "click",

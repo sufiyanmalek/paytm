@@ -28,14 +28,14 @@ const Container = () => {
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
 
-  console.log(user, "123");
+  // console.log(user, "123");
 
   //Connect to Socket
 
   useEffect(() => {
     // Payment Notification
     socket.on("notification", async (data) => {
-      console.log(data);
+      // console.log(data);
       getContactsApi(user, dispatch);
       const id = toast.loading("You have one Notification", {
         position: "top-center",
@@ -76,8 +76,8 @@ const Container = () => {
     });
     // Live transaction update
     socket.on("general transaction", ({ transaction, id }) => {
-      console.log(transaction);
-      console.log(user);
+      // console.log(transaction);
+      // console.log(user);
       let newTransaction;
       if (transaction.sender._id == transaction.receiver._id) {
         newTransaction = { ...transaction, status: "Added" };

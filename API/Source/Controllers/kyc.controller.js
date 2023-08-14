@@ -8,7 +8,7 @@ export const kycController = async (req, res) => {
     try {
       const { aadharFront, aadharBack } = req.files;
 
-      console.log(aadharBack);
+      // console.log(aadharBack);
       const { email } = req.body;
 
       const aadharBackURL = await putObject(aadharBack.data);

@@ -10,7 +10,7 @@ import { KycModal } from "./KycModal";
 
 const ContactSection = ({ user }) => {
   const contactList = useSelector((state) => state.contacts.contactList);
-  console.log(contactList);
+  // console.log(contactList);
   const dispatch = useDispatch();
   const [payBool, setPayBool] = useState(false);
   const [reciever, setReciever] = useState();
@@ -23,8 +23,8 @@ const ContactSection = ({ user }) => {
 
   // Pay to Contact
   const payContact = (receiver) => {
-    console.log(receiver);
-    console.log(receiver, "a");
+    // console.log(receiver);
+    // console.log(receiver, "a");
     setReciever(receiver);
     if (user.isKycVerified) {
       setPayBool(true);

@@ -12,8 +12,6 @@ const WalletPage = ({ user }) => {
   const [addMoneyDetails, setAddMoneyDetails] = useState({}); //add money details
   const [isKycVerified, setIsKycVerified] = useState(user.isKycVerified);
 
-  console.log();
-
   //gets current users wallet details
   useEffect(() => {
     socket.on("update_wallet", (data) => {

@@ -87,7 +87,7 @@ export const fetchTransactions = createAsyncThunk(
           return e;
         }
       });
-      console.log(response.data, "asd");
+      // console.log(response.data, "asd");
       return response.data;
     } catch (error) {
       console.log(error);
@@ -105,7 +105,7 @@ export const fetchStatement = createAsyncThunk(
       };
 
       const response = await axios(config);
-      console.log(response.data, "123");
+      // console.log(response.data, "123");
       if (response.data.transaction) {
         const data = response.data.transaction.map((e) => {
           if (e.sender._id.toString() == e.receiver._id.toString()) {
@@ -125,7 +125,7 @@ export const fetchStatement = createAsyncThunk(
             return e;
           }
         });
-        console.log(data, "asd");
+        // console.log(data, "asd");
         return { ...response.data, transaction: data };
       } else {
         return response.data;

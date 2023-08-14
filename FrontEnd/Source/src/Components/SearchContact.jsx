@@ -10,7 +10,7 @@ const SearchContact = ({ addToContacts, payContact, user }) => {
     e.preventDefault();
     setIsLoading(true);
     const searchText = e.target.elements.userPhone.value;
-    console.log(searchText);
+    // console.log(searchText);
 
     var config = {
       method: "get",

@@ -6,9 +6,9 @@ export const qrController = async (req, res) => {
   const AcceptedFileType = ["image/png", "image/webp", "image/jpeg"];
   try {
     const user = req.user;
-    console.log(user);
+    // console.log(user);
     const data = req.files.qr;
-    console.log(data);
+    // console.log(data);
     if (AcceptedFileType.includes(data.mimetype)) {
       // Parse the image
       await Jimp.read(data.data, function (err, image) {

@@ -97,7 +97,7 @@ export const verifyOtpApi = async (
       return response;
     })
     .catch(function (error) {
-      console.log(error);
+      // console.log(error);
       setError(error);
     });
 };

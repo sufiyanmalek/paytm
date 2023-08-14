@@ -48,7 +48,7 @@ export default class TransactionController {
           return e;
         }
       });
-      console.log(transaction);
+      // console.log(transaction);
       res.send(transaction);
     } catch (error) {
       res.status(500).send(error);
@@ -59,7 +59,7 @@ export default class TransactionController {
   getCustomTransactions = async (req, res) => {
     try {
       const user = req.user;
-      console.log(req.query);
+      // console.log(req.query);
       let { startDate, endDate } = req.query;
       startDate = new Date(startDate);
       const millisecondsInOneDay = 24 * 60 * 60 * 1000;
@@ -83,7 +83,7 @@ export default class TransactionController {
           .populate("receiver", "name")
           .sort({ timestamp: -1 });
 
-        console.log(transaction.length);
+        // console.log(transaction.length);
         if (transaction.length > 0) {
           let openingBalance;
           if (
@@ -91,18 +91,18 @@ export default class TransactionController {
             user._id.toString()
           ) {
             openingBalance = transaction[transaction.length - 1].senderOB;
-            console.log(openingBalance);
+            // console.log(openingBalance);
           } else {
             openingBalance = transaction[transaction.length - 1].receiverOB;
-            console.log(openingBalance);
+            // console.log(openingBalance);
           }
           let closingBalance;
           if (transaction[0].sender._id.toString() === user._id.toString()) {
             closingBalance = transaction[0].senderCB;
-            console.log(closingBalance);
+            // console.log(closingBalance);
           } else {
             closingBalance = transaction[0].receiverCB;
-            console.log(closingBalance);
+            // console.log(closingBalance);
           }
 
           let Out = 0;
@@ -123,7 +123,7 @@ export default class TransactionController {
             }
           });
 
-          console.log(Out, In);
+          // console.log(Out, In);
 
           res.status(200).json({
             transaction,

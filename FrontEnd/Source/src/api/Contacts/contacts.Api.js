@@ -16,7 +16,7 @@ export const getContactsApi = (user, dispatch) => {
   axios(config)
     .then(function (response) {
       if (response.status === 200) {
-        console.log(response.data, "asd");
+        // console.log(response.data, "asd");
         dispatch(getContactList(response.data.contactList));
       }
     })
@@ -45,7 +45,7 @@ export const addContactApi = (contact, dispatch) => {
   };
   axios(config)
     .then(function (response) {
-      console.log(response.data);
+      // console.log(response.data);
       dispatch(getContactList(response.data.contactList));
       toast.update(id, {
         render: response.data.message,

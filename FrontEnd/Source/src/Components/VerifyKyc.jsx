@@ -26,7 +26,7 @@ const VerifyKyc = ({ user, getWallet, setIsKycVerified }) => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
         toast.update(id, {
           render: response.data,
           type: "success",

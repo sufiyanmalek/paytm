@@ -11,7 +11,6 @@ export const verifyToken = (req, res, next) => {
   jwt.verify(req.cookies.token, process.env.jwt_secret, async (err, data) => {
     try {
       if (err) {
-        console.log();
         throw "Invalid User";
       } else {
         const user = await User.findById(data.id);

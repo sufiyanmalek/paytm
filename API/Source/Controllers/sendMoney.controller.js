@@ -135,11 +135,11 @@ export default class SendMoneyController {
                   const receiverData = await SocketModel.findOne({
                     userId: newTransaction.receiver,
                   });
-                  console.log(senderData, receiverData);
+                  // console.log(senderData, receiverData);
 
                   // // On Transaction event emitter
                   if (receiverData) {
-                    console.log("rece");
+                    // console.log("rece");
                     io.to(receiverData.socketId).emit(
                       "on transaction",
                       newTransaction
@@ -148,13 +148,13 @@ export default class SendMoneyController {
                       transaction: generalTransaction,
                       id: receiverData.userId,
                     });
-                    console.log(receiverData.socketId);
+                    // console.log(receiverData.socketId);
                     io.to(receiverData.socketId).emit("notification", {
                       transaction: notificationTransaction,
                     });
                   }
                   if (senderData) {
-                    console.log("senxd");
+                    // console.log("senxd");
                     io.to(senderData.socketId).emit("general transaction", {
                       transaction: generalTransaction,
                       id: senderData.userId,

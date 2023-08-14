@@ -46,7 +46,7 @@ export const sendMessageApi = async (sender, receiver, message) => {
       data: data,
     };
     const response = await axios(config);
-    console.log(response);
+    // console.log(response);
   } catch (error) {
     console.log(error);
   }
