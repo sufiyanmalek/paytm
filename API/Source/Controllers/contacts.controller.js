@@ -1,6 +1,5 @@
 // imports
 import { ContactList } from "../Models/contactList.model.js";
-import { User } from "../Models/user.model.js";
 
 export default class ContactController {
   constructor() {}
