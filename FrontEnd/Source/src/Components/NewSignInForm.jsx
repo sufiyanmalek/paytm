@@ -9,6 +9,7 @@ import { RxCrossCircled } from "react-icons/rx";
 const NewSignInForm = ({ setError, error }) => {
   const navigate = useNavigate();
   const [profilePic, setProfilePic] = useState();
+  const [error2, setError2] = useState(false);
 
   const initialValues = {
     name: "",
@@ -49,7 +50,11 @@ const NewSignInForm = ({ setError, error }) => {
   });
 
   const handleSubmit = (values) => {
-    registerUserApi(values, profilePic, navigate, setError);
+    if (profilePic) {
+      registerUserApi(values, profilePic, navigate, setError);
+    } else {
+      setError2(true);
+    }
   };
 
   return (
@@ -107,6 +112,7 @@ const NewSignInForm = ({ setError, error }) => {
                 type="file"
                 onChange={(e) => {
                   setProfilePic(e.target.files[0]);
+                  setError2();
                 }}
                 className="hidden"
                 id="profilePic"
@@ -129,6 +135,10 @@ const NewSignInForm = ({ setError, error }) => {
             </div>
           )}
         </div>
+        {error2 && (
+          <span className="text-red-500">{"Profile picture required"}</span>
+        )}
+
         <div>
           <label
             htmlFor="phone"
