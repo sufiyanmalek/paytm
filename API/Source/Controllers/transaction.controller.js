@@ -8,12 +8,10 @@ export default class TransactionController {
     setTimeout(async () => {
       try {
         const user = req.user;
-        console.log(req.query);
         const pageNo = parseInt(req.query.pageNo);
         let { startDate, endDate } = req.query;
         startDate = new Date(startDate);
         endDate = new Date(endDate);
-        console.log(endDate);
         const hoursToAdd = 23;
         const minutesToAdd = 59;
         const secondsToAdd = 59;
@@ -21,7 +19,6 @@ export default class TransactionController {
         endDate.setMinutes(endDate.getMinutes() + minutesToAdd);
         endDate.setSeconds(endDate.getSeconds() + secondsToAdd);
         endDate = new Date(endDate);
-        console.log(endDate);
 
         const limit = 10;
         let transactions = await Transaction.find({

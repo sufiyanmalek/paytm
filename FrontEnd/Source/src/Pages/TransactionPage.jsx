@@ -113,6 +113,7 @@ const TransactionPage = ({ user }) => {
             onChange={(e) => {
               setStartDate(e.target.value);
               dispatch(pageZero());
+              setError(false);
             }}
             value={startDate}
             required
@@ -126,6 +127,7 @@ const TransactionPage = ({ user }) => {
             onChange={(e) => {
               setEndDate(e.target.value);
               dispatch(pageZero());
+              setError(false);
             }}
             value={endDate}
             required
