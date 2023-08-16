@@ -26,6 +26,8 @@ export const transactionSlice = createSlice({
     },
     pageZero: (state, action) => {
       state.pageNo = 0;
+      state.dataFetching = true;
+      state.transactions = [];
     },
   },
 

@@ -68,7 +68,9 @@ const TransactionPage = ({ user }) => {
       console.log(invoiceData);
       const query = `startDate=${startDate}&endDate=${endDate}`;
       navigate(`?${query}`);
+      const pageNo = 0;
       const params = { user, pageNo, startDate, endDate };
+      dispatch(pageZero());
       dispatch(fetchTransactions(params));
     }
   };
@@ -87,6 +89,9 @@ const TransactionPage = ({ user }) => {
     await dispatch(fetchStatement(params));
     print();
   };
+
+  console.log(transactions, "asd");
+  console.log(pageNo, "asd");
 
   return (
     <div>
@@ -112,7 +117,6 @@ const TransactionPage = ({ user }) => {
             name="startDate"
             onChange={(e) => {
               setStartDate(e.target.value);
-              dispatch(pageZero());
               setError(false);
             }}
             value={startDate}
@@ -126,7 +130,6 @@ const TransactionPage = ({ user }) => {
             name="endDate"
             onChange={(e) => {
               setEndDate(e.target.value);
-              dispatch(pageZero());
               setError(false);
             }}
             value={endDate}
